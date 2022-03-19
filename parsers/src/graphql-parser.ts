@@ -96,7 +96,6 @@ export const getProducts = async (): Promise<Product[]> => {
       url: meta['seo']['url']
     });
   }
-  console.log(products);
 
   return products;
 };
