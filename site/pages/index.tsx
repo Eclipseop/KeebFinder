@@ -14,15 +14,19 @@ const Home: NextPage = () => {
 
   const products: Product[] = data;
 
+  const getCompanies = () => {
+    const companies = new Set<string>();
+    products.forEach(product => companies.add(product.from));
+    return Array.from(companies);
+  };
+
   return (
-    <div className="flex flex-col min-h-screen w-5/6 lg:w-2/3 justify-center mx-auto py-4">
+    <div className="flex flex-col min-h-screen w-5/6 lg:w-2/3 mx-auto py-4">
       <select className="w-full border p-1 rounded" onChange={(e) => setFilter(e.target.value)}>
         <option value="all">All</option>
-        <option value="kbdfans">KBDFans</option>
-        <option value="keebsforall">KeebsForAll</option>
-        <option value="novelkeys">NovelKeys</option>
-        <option value="kineticlabs">KineticLabs</option>
-        <option value="thekeycompany">The Key Company</option>
+        {
+          getCompanies().map(company => <option value={company} key={company}>{company}</option>)
+        }
       </select>
       <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 w-full gap-4 pt-4 h-full">
         {
