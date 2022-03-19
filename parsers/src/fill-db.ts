@@ -1,13 +1,13 @@
-const { getAllPages } = require('./html-parser');
-const { PrismaClient } = require('@prisma/client');
+import { getAllPages } from './html-parser';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 const main = async () => {
   const products = await getAllPages();
   
-  for (let product of products) {
-    const prismaRes = await prisma.product.create({
+  for (const product of products) {
+    await prisma.product.create({
       data: {
         name: product.name,
         price: product.price,

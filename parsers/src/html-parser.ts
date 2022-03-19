@@ -1,13 +1,30 @@
-const axios = require('axios');
-const HTMLParser = require('node-html-parser');
+import axios from 'axios';
+import { parse } from 'node-html-parser';
 
-const sites = [
+type Site = {
+  name: string,
+  url: string,
+  root: string[]
+  title: string;
+  price: string,
+  image: string
+}
+
+type Product = {
+  name: string,
+  price: string,
+  image: string,
+  url: string,
+  from: string
+}
+
+const sites: Site[] = [
   {
     name: 'kbdfans',
     url: 'https://kbdfans.com/collections/keycaps',
     root: ['.cc-product-list', '.product-block'],
     title: '.product-block__title',
-    cost: '.theme-money',
+    price: '.theme-money',
     image: '.rimage-wrapper ' //we then use img -> data-src attribute
   },
   {
@@ -15,7 +32,7 @@ const sites = [
     url: 'https://keebsforall.com/collections/keycaps',
     root: ['.list-products', '.grid__cell'],
     title: '.product-item__title', 
-    cost: '.product-item__price',
+    price: '.product-item__price',
     image: '.product-item__image-wrapper'
   },
   {
@@ -23,23 +40,22 @@ const sites = [
     url: 'https://novelkeys.com/collections/keycaps',
     root: ['.three-column-grid', '.product-card'],
     title: '.product-card__title', 
-    cost: '.price-item',
+    price: '.price-item',
     image: '.product-card__image-wrapper'
   }
 ];
 
-const pull = async (url, siteData) => {
+const pull = async (url: string, siteData: Site): Promise<Product[]> => {
   const { data } = await axios.get(url);
-  const root = HTMLParser.parse(data);
-  console.log(url);
+  const root = parse(data);
 
-  const products = root.querySelector(siteData.root[0]).querySelectorAll(siteData.root[1]);
+  const products = root.querySelector(siteData.root[0])?.querySelectorAll(siteData.root[1]);
 
-  const productsJson = [];
+  const productsJson: Product[] = [];
 
-  for (let product of products) {
+  for (const product of products) {
     const name = product.querySelector(siteData.title).rawText.trim();
-    const price = product.querySelector(siteData.cost).rawText.trim();
+    const price = product.querySelector(siteData.price).rawText.trim();
 
     let image = product.querySelector(siteData.image).querySelector("img").attributes['data-src'];
     if (image === undefined) {
@@ -56,8 +72,8 @@ const pull = async (url, siteData) => {
   return productsJson;
 };
 
-const getAllPages = async () => {
-  const products = [];
+export const getAllPages = async () => {
+  const products: Product[] = [];
   const site = sites[2];
 
   //for (let site of sites) {
@@ -74,8 +90,3 @@ const getAllPages = async () => {
 };
 
 //getAllPages();
-
-
-module.exports = {
-  getAllPages
-};

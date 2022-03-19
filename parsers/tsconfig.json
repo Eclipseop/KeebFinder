@@ -5,6 +5,7 @@
         "module": "commonjs",
         "outDir": "./dist",
         "moduleResolution": "node",
+        "strictNullChecks": false,
         "lib": ["es6", "dom", "es2015.promise", "es2015"]
     }
 }
