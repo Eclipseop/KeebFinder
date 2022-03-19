@@ -1,3 +1,36 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/function-component-definition": [2, { "namedComponents": "arrow-function" }],
+    "semi": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "import/no-anonymous-default-export": "off",
+    "@next/next/no-img-element": "off"
+  }
 }

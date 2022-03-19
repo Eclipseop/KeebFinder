@@ -12,8 +12,8 @@ const Item = ({title, cost, image}: Product) => {
   const abbreviate = (title: string) => {
     if (title.length < 50) return title;
 
-    return title.substring(0, 50) + "..."
-  }
+    return title.substring(0, 50) + "...";
+  };
 
   return (
     <div className="border rounded p-2 h-64 hover:ring ring-blue-100">
@@ -21,8 +21,8 @@ const Item = ({title, cost, image}: Product) => {
       <h1>{abbreviate(title)}</h1>
       <h2>{cost}</h2>
     </div>
-  )
-}
+  );
+};
 
 const Home: NextPage = () => {
   console.log(products);
@@ -35,7 +35,7 @@ const Home: NextPage = () => {
         }
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Home;
