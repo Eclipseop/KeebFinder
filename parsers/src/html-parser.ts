@@ -42,6 +42,14 @@ const sites: Site[] = [
     title: '.product-card__title', 
     price: '.price-item',
     image: '.product-card__image-wrapper'
+  },
+  {
+    name: 'thekeycompany',
+    url: 'https://thekey.company/collections/in-stock/keycaps',
+    root: ['.grid-product__grid', '.grid-product__grid-item'],
+    title: '.grid-product__title', 
+    price: '.grid-product__price',
+    image: '.grid-product__image-wrapper'
   }
 ];
 
@@ -74,7 +82,7 @@ const pull = async (url: string, siteData: Site): Promise<Product[]> => {
 
 export const getAllPages = async () => {
   const products: Product[] = [];
-  const site = sites[2];
+  const site = sites[3];
 
   //for (let site of sites) {
   const p1 = await pull(site.url, site);
@@ -86,6 +94,8 @@ export const getAllPages = async () => {
     data.forEach((p) => products.push(p));
   }
   //}
+
+  ///console.log(products);
   return products;
 };
 

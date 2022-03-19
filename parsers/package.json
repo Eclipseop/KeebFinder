@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "tsc && node dist/fill-db.js",
-    "test": "tsc && node dist/graphql-parser.js"
+    "graph-test": "tsc && node dist/graphql-parser.js",
+    "html-test": "tsc && node dist/html-parser.js"
   },
   "devDependencies": {
     "@types/node": "17.0.21",

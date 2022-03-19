@@ -22,13 +22,14 @@ const Home: NextPage = () => {
         <option value="keebsforall">KeebsForAll</option>
         <option value="novelkeys">NovelKeys</option>
         <option value="kineticlabs">KineticLabs</option>
+        <option value="thekeycompany">The Key Company</option>
       </select>
       <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 w-full gap-4 pt-4 h-full">
         {
           products
             .filter(product => filter === "all" ? true : product.from === filter)
             .filter((p) => parseInt(p.price.replace('$', '')) > 0)
-            .map((p) => <Item key={p.name} product={p} />)
+            .map((p) => <Item key={p.id} product={p} />)
         }
       </div>
     </div>

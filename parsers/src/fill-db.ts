@@ -5,7 +5,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const main = async () => {
-  // const products = await getAllPages();
+  const products = await getAllPages();
   
   // for (const product of products) {
   //   await prisma.product.create({
@@ -17,7 +17,7 @@ const main = async () => {
   //       from: product.from
   //     }
   //   });
-  const products = await getProducts();
+  //const products = await getProducts();
   for (const product of products) {
     await prisma.product.create({
       data: {
