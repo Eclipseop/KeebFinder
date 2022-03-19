@@ -9,9 +9,9 @@ const Item = ({product}: { product: Product }) => {
   };
   
   return (
-    <div className="border rounded p-2 h-72 hover:ring ring-blue-100 flex flex-col">
+    <div className="border rounded p-2 h-72 hover:ring ring-blue-200 flex flex-col bg-gray-100 border">
       <img 
-        className="h-40 w-40 ease-in-out duration-75 hover:absolute hover:h-96 hover:w-96" 
+        className="h-40 w-40 rounded" 
         alt="keyboard image"
         src={`${product.image.startsWith('http') ? '' : 'https://'}${product.image}`} 
       />
