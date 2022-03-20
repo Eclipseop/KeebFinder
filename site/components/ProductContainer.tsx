@@ -14,7 +14,7 @@ const ProductContainer = ({products, filter, getMoreData}: Props) => {
       dataLength={products.length}
       next={getMoreData}
       hasMore={true}
-      loader={<p>Loading...</p>}
+      loader={''}
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 w-full gap-4 pt-4 h-full">
         {

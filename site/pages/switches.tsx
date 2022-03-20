@@ -1,18 +1,28 @@
 import { Product } from "@prisma/client";
 import { NextPage } from "next";
-import { useState } from "react";
-import useSWR from "swr";
+import { useEffect, useState } from "react";
 import ProductContainer from "../components/ProductContainer";
 
 const Keycaps: NextPage = () => {
-  const {data} = useSWR("/api/products?type=switches", (url) => fetch(url).then(r => r.json()));
   const [filter, setFilter] = useState('all');
 
-  if (!data) {
-    return <p>Loading...</p>;
-  }
+  const [products, setProducts] = useState<Product[]>([]);
+  const [offset, setOffset] = useState(20);
 
-  const products: Product[] = data;
+  useEffect(() => {
+    const get = async () => {
+      const data = await (await fetch('/api/products?type=switches&offset=0')).json();
+      setProducts(data);
+    };
+    get();
+  }, []);
+
+  const getMoreData = async () => {
+    setOffset(offset + 20);
+    const data = await (await fetch(`/api/products?type=switches&offset=${offset}`)).json();
+    const newArr = products.concat(data);
+    setProducts(newArr);
+  };
 
   const getCompanies = () => {
     const companies = new Set<string>();
@@ -28,7 +38,7 @@ const Keycaps: NextPage = () => {
           getCompanies().map(company => <option value={company} key={company}>{company}</option>)
         }
       </select>
-      <ProductContainer products={products} filter={filter} />
+      <ProductContainer products={products} filter={filter} getMoreData={getMoreData} />
     </div>
   );
 };
