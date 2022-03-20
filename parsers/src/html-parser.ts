@@ -3,7 +3,9 @@ import { parse } from 'node-html-parser';
 
 type Site = {
   name: string,
-  url: string,
+  baseUrl: string,
+  keycapUrl: string,
+  switchUrl: string,
   root: string[]
   title: string;
   price: string,
@@ -15,13 +17,16 @@ export type Product = {
   price: string,
   image: string,
   url: string,
-  from: string
+  from: string,
+  productType: string,
 }
 
 const sites: Site[] = [
   {
     name: 'kbdfans',
-    url: 'https://kbdfans.com/collections/keycaps',
+    baseUrl: 'https://kbdfans.com',
+    keycapUrl: 'https://kbdfans.com/collections/keycaps',
+    switchUrl: 'https://kbdfans.com/collections/switches',
     root: ['.cc-product-list', '.product-block'],
     title: '.product-block__title',
     price: '.theme-money',
@@ -29,7 +34,9 @@ const sites: Site[] = [
   },
   {
     name: 'keebsforall',
-    url: 'https://keebsforall.com/collections/keycaps',
+    baseUrl: 'https://keebsforall.com',
+    keycapUrl: 'https://keebsforall.com/collections/keycaps',
+    switchUrl: 'https://keebsforall.com/collections/mx-keyboard-switches',
     root: ['.list-products', '.grid__cell'],
     title: '.product-item__title', 
     price: '.product-item__price',
@@ -37,7 +44,9 @@ const sites: Site[] = [
   },
   {
     name: 'novelkeys',
-    url: 'https://novelkeys.com/collections/keycaps',
+    baseUrl: 'https://novelkeys.com',
+    keycapUrl: 'https://novelkeys.com/collections/keycaps',
+    switchUrl: 'https://novelkeys.com/collections/switches',
     root: ['.three-column-grid', '.product-card'],
     title: '.product-card__title', 
     price: '.price-item',
@@ -45,7 +54,9 @@ const sites: Site[] = [
   },
   {
     name: 'thekeycompany',
-    url: 'https://thekey.company/collections/in-stock/keycaps',
+    baseUrl: 'https://thekey.company',
+    keycapUrl: 'https://thekey.company/collections/in-stock/keycaps',
+    switchUrl: 'https://thekey.company/collections/in-stock/switches',
     root: ['.grid-product__grid', '.grid-product__grid-item'],
     title: '.grid-product__title', 
     price: '.grid-product__price',
@@ -71,10 +82,10 @@ const pull = async (url: string, siteData: Site): Promise<Product[]> => {
     }
     image = image.substring(2).replace('{width}', '1080');
 
-    const link = siteData.url.replace('/collections/keycaps', '') + product.querySelector('a').attributes.href;
+    const link = siteData.baseUrl.replace('/collections/keycaps', '') + product.querySelector('a').attributes.href;
 
     productsJson.push({
-      name, price, image, url: link, from: siteData.name
+      name, price, image, url: link, from: siteData.name, productType: url.includes('keycaps') ? 'keycaps' : 'switches'
     });
   }
   return productsJson;
@@ -82,20 +93,27 @@ const pull = async (url: string, siteData: Site): Promise<Product[]> => {
 
 export const getAllPages = async () => {
   const products: Product[] = [];
-  const site = sites[3];
+  //const site = sites[0];
 
-  //for (let site of sites) {
-  const p1 = await pull(site.url, site);
-  p1.forEach((p) => products.push(p));
-
-  for (let i = 2; i < 2; i++) {
-    const url = `${site.url}?page=${i}`;
-    const data = await pull(url, site);
-    data.forEach((p) => products.push(p));
+  for (const site of sites) {
+    const basePageKeyCaps = await pull(site.keycapUrl, site);
+    const basePageSwitches = await pull(site.switchUrl, site);
+    basePageKeyCaps.forEach(p => products.push(p));
+    basePageSwitches.forEach(p => products.push(p));
+  
+    for (let i = 2; i < 20; i++) {
+      const keyCapUrl = `${site.keycapUrl}?page=${i}`;
+      const switchUrl = `${site.switchUrl}?page=${i}`;
+  
+      const keyCapData = await pull(keyCapUrl, site);
+      const switchData = await pull(switchUrl, site);
+  
+      keyCapData.forEach(p => products.push(p));
+      switchData.forEach(p => products.push(p));
+    }
   }
-  //}
 
-  ///console.log(products);
+  //console.log(products);
   return products;
 };
 

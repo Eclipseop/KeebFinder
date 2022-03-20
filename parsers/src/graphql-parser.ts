@@ -76,11 +76,11 @@ const client = new GraphQLClient('https://auth.kineticlabs.store/api/2020-10/gra
   'x-shopify-storefront-access-token': process.env.SHOPIFY_TOKEN
 } });
 
-export const getProducts = async (): Promise<Product[]> => {
+export const getProducts = async (handle: string): Promise<Product[]> => {
   const products: Product[] = [];
 
   const res: Response = await client.request(query, {
-    "plpHandle": "keycaps",
+    "plpHandle": handle,
     "limit": 100
   });
   for (const edge of res.plp.products.edges) {
@@ -93,8 +93,21 @@ export const getProducts = async (): Promise<Product[]> => {
       from: 'kineticlabs',
       price: '$' + productNode.variants.edges[0].node.priceV2.amount,
       image: productNode.images.edges[0].node.originalSrc,
-      url: meta['seo']['url']
+      url: meta['seo']['url'],
+      productType: handle,
     });
+  }
+
+  return products;
+};
+
+export const getAllProducts = async (): Promise<Product[]> => {
+  const products: Product[] = [];
+
+  const handles = ['keycaps', 'switches'];
+  for (const handle of handles) {
+    const res = await getProducts(handle);
+    res.forEach(p => products.push(p));
   }
 
   return products;

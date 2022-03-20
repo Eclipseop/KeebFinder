@@ -15,4 +15,5 @@ model Product {
   price     String
   url       String
   from      String
+  productType      String
 }

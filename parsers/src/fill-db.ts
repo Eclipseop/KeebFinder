@@ -1,11 +1,12 @@
 import { getAllPages } from './html-parser';
-import { getProducts } from './graphql-parser';
+import { getAllProducts } from './graphql-parser';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 const main = async () => {
-  const products = await getAllPages();
+  //const products = await getAllPages();
+  const products = await getAllProducts();
   
   // for (const product of products) {
   //   await prisma.product.create({
@@ -25,7 +26,8 @@ const main = async () => {
         price: product.price,
         image: product.image,
         url: product.url,
-        from: product.from
+        from: product.from,
+        productType: product.productType,
       }
     });
   }   
