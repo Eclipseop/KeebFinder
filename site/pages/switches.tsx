@@ -5,7 +5,7 @@ import useSWR from "swr";
 import ProductContainer from "../components/ProductContainer";
 
 const Keycaps: NextPage = () => {
-  const {data} = useSWR("/api/products?type=keycaps", (url) => fetch(url).then(r => r.json()));
+  const {data} = useSWR("/api/products?type=switches", (url) => fetch(url).then(r => r.json()));
   const [filter, setFilter] = useState('all');
 
   if (!data) {
