@@ -8,13 +8,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const { type } = req.query;
+  const { type, offset } = req.query;
 
   // @ts-ignore
   const data = await prisma.product.findMany({
     where: {
       productType: type as string,
-    }
+    },
+    take: 20,
+    skip: +offset
   });
   res.status(200).json(data);
 };
