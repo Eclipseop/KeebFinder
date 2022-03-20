@@ -16,7 +16,10 @@ const ProductContainer = ({products, filter, getMoreData}: Props) => {
       hasMore={true}
       loader={''}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 w-full gap-4 pt-4 h-full">
+      {
+        products.length === 0 ? <p>Loading...</p>: null
+      }
+      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 w-full gap-4 pt-4 px-1 h-full">
         {
           products
             .filter(product => filter === "all" ? true : product.from === filter)

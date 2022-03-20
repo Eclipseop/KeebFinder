@@ -11,7 +11,7 @@ const Item = ({product}: { product: Product }) => {
   return (
     <div className="border rounded p-2 h-72 hover:ring ring-blue-200 flex flex-col bg-gray-100 border">
       <img 
-        className="h-40 w-40 rounded" 
+        className="h-40 w-40 rounded hover:h-96 hover:w-96 hover:absolute transition-height ease-in-out duration-100" 
         alt="keyboard image"
         src={`${product.image.startsWith('http') ? '' : 'https://'}${product.image}`} 
       />
@@ -19,7 +19,7 @@ const Item = ({product}: { product: Product }) => {
         <h1>{abbreviate(product.name)}</h1>
         <h2>From: {product.price}</h2>
       </div>
-      <a href={product.url} target="_blank" className="bg-blue-500 hover:bg-blue-600 text-white w-full p-1 rounded mt-1 text-center" rel="noreferrer">Buy on <span className="font-semibold">{product.from}</span></a>
+      <a href={product.url} target="_blank" className="bg-blue-500 hover:bg-blue-600 text-white w-full p-1 rounded text-center" rel="noreferrer">Buy on <span className="font-semibold">{product.from}</span></a>
     </div>
   );
 };
