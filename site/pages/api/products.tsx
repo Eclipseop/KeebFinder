@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+// @ts-ignore
+import prisma from '../../lib/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET') {
@@ -10,8 +9,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const { type } = req.query;
-  console.log(type);
 
+  // @ts-ignore
   const data = await prisma.product.findMany({
     where: {
       productType: type as string,
