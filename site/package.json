@@ -10,14 +10,11 @@
   },
   "dependencies": {
     "@prisma/client": "^3.11.0",
-    "axios": "^0.26.1",
     "next": "12.1.0",
-    "node-html-parser": "^5.3.3",
     "prisma": "^3.11.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-infinite-scroll-component": "^6.1.0",
-    "swr": "^1.2.2"
+    "react-infinite-scroll-component": "^6.1.0"
   },
   "devDependencies": {
     "@types/node": "17.0.21",
