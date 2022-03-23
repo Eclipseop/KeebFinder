@@ -1,44 +1,50 @@
 import { Product } from "@prisma/client";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
+import CompanySelector from "../components/CompanySelector";
 import ProductContainer from "../components/ProductContainer";
 
 const Keycaps: NextPage = () => {
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState<string[]>([]);
 
   const [products, setProducts] = useState<Product[]>([]);
+  const [companies, setCompanies] = useState<string[]>([]);
   const [offset, setOffset] = useState(20);
 
   useEffect(() => {
     const get = async () => {
-      const data = await (await fetch('/api/products?type=keycaps&offset=0')).json();
-      setProducts(data);
+      const productData = await (await fetch(`/api/products?type=keycaps&offset=0&company=${filter.join(',')}`)).json();
+      console.log(productData);
+      setProducts(productData);
+
+      const companyData: {from: string}[] = await (await fetch(`/api/company`)).json();
+      setCompanies(companyData.map(c => c.from));
+      if (filter.length == 0) setFilter(companyData.map(c => c.from));
     };
     get();
-  }, []);
+  }, [filter]);
 
   const getMoreData = async () => {
     setOffset(offset + 20);
-    const data = await (await fetch(`/api/products?type=keycaps&offset=${offset}`)).json();
+    const data = await (await fetch(`/api/products?type=keycaps&offset=${offset}&company=${filter}`)).json();
     const newArr = products.concat(data);
     setProducts(newArr);
   };
 
-  const getCompanies = () => {
-    const companies = new Set<string>();
-    products.forEach(product => companies.add(product.from));
-    return Array.from(companies);
+  const handleCheckboxClick = (company: string) => {
+    const newFilter = filter.includes(company) ? filter.filter(c => c !== company) : [...filter, company];
+    setFilter(newFilter);
+
   };
 
   return (
     <div className="flex flex-col">
-      <select className="w-full border p-1 rounded" onChange={(e) => setFilter(e.target.value)}>
-        <option value="all">All</option>
-        {
-          getCompanies().map(company => <option value={company} key={company}>{company}</option>)
-        }
-      </select>
-      <ProductContainer products={products} filter={filter} getMoreData={getMoreData} />
+      <CompanySelector 
+        companies={companies}
+        selectedCompanies={filter}
+        click={(c) => handleCheckboxClick(c)}
+      />
+      <ProductContainer products={products} getMoreData={getMoreData} />
     </div>
   );
 };
