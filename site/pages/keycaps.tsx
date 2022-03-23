@@ -14,7 +14,6 @@ const Keycaps: NextPage = () => {
   useEffect(() => {
     const get = async () => {
       const productData = await (await fetch(`/api/products?type=keycaps&offset=0&company=${filter.join(',')}`)).json();
-      console.log(productData);
       setProducts(productData);
 
       const companyData: {from: string}[] = await (await fetch(`/api/company`)).json();
