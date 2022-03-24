@@ -42,12 +42,14 @@ const ProductPageLayout = ({productType}: Props) => {
 
   return (
     <Layout>
-      <div className="flex flex-col">
-        <CompanySelector 
-          companies={companies}
-          selectedCompanies={filter}
-          click={(c) => handleCheckboxClick(c)}
-        />
+      <div className="flex flex-row w-full">
+        <div className="sticky top-[75px] z-10 h-48 min-w-[150px]">
+          <CompanySelector 
+            companies={companies}
+            selectedCompanies={filter}
+            click={(c) => handleCheckboxClick(c)}
+          />
+        </div>
         <ProductContainer products={products} getMoreData={getMoreData} />
       </div>
     </Layout>

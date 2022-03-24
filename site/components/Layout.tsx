@@ -12,7 +12,7 @@ const Layout = ({ children }: LayoutProps) => {
       </Head>
       <div className="min-h-screen bg-gray-200">
         <Header />
-        <div className="w-5/6 lg:w-2/3 mx-auto py-4">
+        <div className="w-11/12 mx-auto py-4">
           
           {children}
         </div>

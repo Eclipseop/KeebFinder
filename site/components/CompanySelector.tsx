@@ -8,7 +8,8 @@ type Props = {
 
 const CompanySelector = ({companies, selectedCompanies, click}: Props) => {
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-col bg-gray-100 rounded p-2 mt-1">
+      <h2 className="font-semibold">Companies</h2>
       {
         companies.map(company => (
           <Checkbox 

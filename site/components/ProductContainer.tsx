@@ -18,7 +18,7 @@ const ProductContainer = ({products, getMoreData}: Props) => {
       {
         products.length === 0 ? <p>Loading...</p>: null
       }
-      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 w-full gap-4 pt-4 px-1 h-full">
+      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 w-full gap-4 px-1 h-full pt-1">
         {
           products
             .filter((p) => +p.price > 0)
