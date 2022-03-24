@@ -30,7 +30,7 @@ const sites: Site[] = [
     root: ['.cc-product-list', '.product-block'],
     title: '.product-block__title',
     price: '.theme-money',
-    image: '.rimage-wrapper ' //we then use img -> data-src attribute
+    image: '.rimage-wrapper' //we then use img -> data-src attribute
   },
   {
     name: 'keebsforall',
@@ -71,6 +71,16 @@ const sites: Site[] = [
     title: '.product-card__title', 
     price: '.price-item--regular',
     image: '.product-card__image-wrapper'
+  },
+  {
+    name: 'divinikey',
+    baseUrl: 'https://divinikey.com',
+    keycapUrl: 'https://divinikey.com/collections/keycap-sets',
+    switchUrl: 'https://divinikey.com/collections/switches',
+    root: ['.product-list', '.product-block'],
+    title: '.title', 
+    price: '.amount',
+    image: '.rimage-wrapper'
   }
 ];
 
@@ -79,15 +89,15 @@ const pull = async (url: string, siteData: Site): Promise<Product[]> => {
   const root = parse(data);
 
   const products = root.querySelector(siteData.root[0])?.querySelectorAll(siteData.root[1]);
+  if (!products) return [];
 
   const productsJson: Product[] = [];
 
   for (const product of products) {
-    const name = product.querySelector(siteData.title).rawText.trim();
+    const name = product.querySelector(siteData.title)?.rawText?.trim();
+    if (!name) continue;
     const price = +product.querySelector(siteData.price).rawText.replace('$', '').replace('From', '').trim();
-    if (price == null || !price) {
-      continue;
-    }
+    if (price == null || !price) continue;
 
     let image = product.querySelector(siteData.image).querySelector("img").attributes['data-src'];
     if (image === undefined) {
@@ -98,7 +108,7 @@ const pull = async (url: string, siteData: Site): Promise<Product[]> => {
     const link = siteData.baseUrl + product.querySelector('a').attributes.href;
 
     productsJson.push({
-      name, price: +price.toFixed(2), image, url: link, comapny: siteData.name, type: url.includes('keycaps') ? 'keycaps' : 'switches'
+      name, price: +price.toFixed(2), image, url: link, comapny: siteData.name, type: url.includes('keycap') ? 'keycaps' : 'switches'
     });
   }
   return productsJson;
