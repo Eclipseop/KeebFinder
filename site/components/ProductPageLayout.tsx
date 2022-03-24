@@ -1,6 +1,7 @@
 import { Product } from "@prisma/client";
 import { useEffect, useState } from "react";
 import CompanySelector from "./CompanySelector";
+import Layout from "./Layout";
 import ProductContainer from "./ProductContainer";
 
 type Props = {
@@ -40,14 +41,16 @@ const ProductPageLayout = ({productType}: Props) => {
   };
 
   return (
-    <div className="flex flex-col">
-      <CompanySelector 
-        companies={companies}
-        selectedCompanies={filter}
-        click={(c) => handleCheckboxClick(c)}
-      />
-      <ProductContainer products={products} getMoreData={getMoreData} />
-    </div>
+    <Layout>
+      <div className="flex flex-col">
+        <CompanySelector 
+          companies={companies}
+          selectedCompanies={filter}
+          click={(c) => handleCheckboxClick(c)}
+        />
+        <ProductContainer products={products} getMoreData={getMoreData} />
+      </div>
+    </Layout>
   );
 };
 
