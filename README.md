@@ -7,6 +7,7 @@ Parses various keyboard websites to create an aggregated list of all available p
 * [KBDfans](https://kbdfans.com/)
 * [NovelKeys](https://novelkeys.com/)
 * [KeebsForAll](https://keebsforall.com/)
+* [CannonKeys](https://cannonkeys.com/)
 
 ## Development
 Requirements: [Postgres](https://hub.docker.com/_/postgres)

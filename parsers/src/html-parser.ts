@@ -61,6 +61,16 @@ const sites: Site[] = [
     title: '.grid-product__title', 
     price: '.grid-product__price',
     image: '.grid-product__image-wrapper'
+  },
+  {
+    name: 'cannonkeys',
+    baseUrl: 'https://cannonkeys.com',
+    keycapUrl: 'https://cannonkeys.com/collections/cannonkeys-keycaps',
+    switchUrl: 'https://cannonkeys.com/collections/switches',
+    root: ['.grid--view-items', '.grid__item'],
+    title: '.product-card__title', 
+    price: '.price-item--regular',
+    image: '.product-card__image-wrapper'
   }
 ];
 
@@ -75,12 +85,15 @@ const pull = async (url: string, siteData: Site): Promise<Product[]> => {
   for (const product of products) {
     const name = product.querySelector(siteData.title).rawText.trim();
     const price = +product.querySelector(siteData.price).rawText.replace('$', '').replace('From', '').trim();
+    if (price == null || !price) {
+      continue;
+    }
 
     let image = product.querySelector(siteData.image).querySelector("img").attributes['data-src'];
     if (image === undefined) {
       continue;
     }
-    image = image.substring(2).replace('{width}', '1080');
+    image = image.substring(2).replace('{width}', '720');
 
     const link = siteData.baseUrl + product.querySelector('a').attributes.href;
 
