@@ -11,9 +11,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // @ts-ignore
   const data = await prisma.product.findMany({
     select: {
-      from: true
+      company: true
     },
-    distinct: ['from'],
+    distinct: ['company'],
   });
   res.status(200).json(data);
 };

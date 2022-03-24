@@ -17,9 +17,9 @@ const Item = ({product}: { product: Product }) => {
       />
       <div className="flex-grow">
         <h1 title={product.name}>{abbreviate(product.name)}</h1>
-        <h2>From: {product.price}</h2>
+        <h2>From: ${(+product.price).toFixed(2)}</h2>
       </div>
-      <a href={product.url} target="_blank" className="bg-blue-500 hover:bg-blue-600 text-white w-full p-1 rounded text-center" rel="noreferrer">Buy on <span className="font-semibold">{product.from}</span></a>
+      <a href={product.url} target="_blank" className="bg-blue-500 hover:bg-blue-600 text-white w-full p-1 rounded text-center" rel="noreferrer">Buy on <span className="font-semibold">{product.company}</span></a>
     </div>
   );
 };

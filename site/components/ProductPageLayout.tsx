@@ -19,9 +19,9 @@ const ProductPageLayout = ({productType}: Props) => {
       const productData = await (await fetch(`/api/products?type=${productType}&offset=0&company=${filter.join(',')}`)).json();
       setProducts(productData);
   
-      const companyData: {from: string}[] = await (await fetch(`/api/company`)).json();
-      setCompanies(companyData.map(c => c.from));
-      if (filter.length == 0) setFilter(companyData.map(c => c.from));
+      const companyData: {company: string}[] = await (await fetch(`/api/company`)).json();
+      setCompanies(companyData.map(c => c.company));
+      if (filter.length == 0) setFilter(companyData.map(c => c.company));
     };
     get();
   }, [filter]);

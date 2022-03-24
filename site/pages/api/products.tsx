@@ -13,8 +13,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // @ts-ignore
   const data = await prisma.product.findMany({
     where: {
-      productType: type as string,
-      from: {
+      type: type as string,
+      company: {
         in: (company as string).split(',')
       }
     },
