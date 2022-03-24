@@ -5,29 +5,21 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const main = async () => {
-  //const products = await getAllPages();
-  const products = await getAllProducts();
-  
-  // for (const product of products) {
-  //   await prisma.product.create({
-  //     data: {
-  //       name: product.name,
-  //       price: product.price,
-  //       image: product.image,
-  //       url: product.url,
-  //       from: product.from
-  //     }
-  //   });
-  //const products = await getProducts();
-  for (const product of products) {
+  const res = await prisma.product.deleteMany({});
+
+  const htmlProducts = await getAllPages();
+  const gqlProducts = await getAllProducts();
+
+  for (const product of htmlProducts.concat(gqlProducts)) {
+    console.log(`Attemping to insert ${JSON.stringify(product)}`);
     await prisma.product.create({
       data: {
         name: product.name,
         price: product.price,
         image: product.image,
         url: product.url,
-        from: product.from,
-        productType: product.productType,
+        company: product.comapny,
+        type: product.type,
       }
     });
   }   

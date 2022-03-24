@@ -14,11 +14,11 @@ type Site = {
 
 export type Product = {
   name: string,
-  price: string,
+  price: number,
   image: string,
   url: string,
-  from: string,
-  productType: string,
+  comapny: string,
+  type: string,
 }
 
 const sites: Site[] = [
@@ -74,7 +74,7 @@ const pull = async (url: string, siteData: Site): Promise<Product[]> => {
 
   for (const product of products) {
     const name = product.querySelector(siteData.title).rawText.trim();
-    const price = product.querySelector(siteData.price).rawText.trim();
+    const price = +product.querySelector(siteData.price).rawText.replace('$', '').replace('From', '').trim();
 
     let image = product.querySelector(siteData.image).querySelector("img").attributes['data-src'];
     if (image === undefined) {
@@ -82,10 +82,10 @@ const pull = async (url: string, siteData: Site): Promise<Product[]> => {
     }
     image = image.substring(2).replace('{width}', '1080');
 
-    const link = siteData.baseUrl.replace('/collections/keycaps', '') + product.querySelector('a').attributes.href;
+    const link = siteData.baseUrl + product.querySelector('a').attributes.href;
 
     productsJson.push({
-      name, price, image, url: link, from: siteData.name, productType: url.includes('keycaps') ? 'keycaps' : 'switches'
+      name, price: +price.toFixed(2), image, url: link, comapny: siteData.name, type: url.includes('keycaps') ? 'keycaps' : 'switches'
     });
   }
   return productsJson;
@@ -93,9 +93,9 @@ const pull = async (url: string, siteData: Site): Promise<Product[]> => {
 
 export const getAllPages = async () => {
   const products: Product[] = [];
-  //const site = sites[0];
 
   for (const site of sites) {
+    console.log(`Parsing ${site.name} page 1`);
     const basePageKeyCaps = await pull(site.keycapUrl, site);
     const basePageSwitches = await pull(site.switchUrl, site);
     basePageKeyCaps.forEach(p => products.push(p));
@@ -104,17 +104,19 @@ export const getAllPages = async () => {
     for (let i = 2; i < 20; i++) {
       const keyCapUrl = `${site.keycapUrl}?page=${i}`;
       const switchUrl = `${site.switchUrl}?page=${i}`;
+      console.log(`Parsing ${site.name} page ${i}`);
   
       const keyCapData = await pull(keyCapUrl, site);
       const switchData = await pull(switchUrl, site);
+      if (keyCapData.length === 0 && switchData.length === 0) {
+        console.log('breakign!');
+        break;
+      }
   
       keyCapData.forEach(p => products.push(p));
       switchData.forEach(p => products.push(p));
     }
   }
 
-  //console.log(products);
   return products;
 };
-
-//getAllPages();

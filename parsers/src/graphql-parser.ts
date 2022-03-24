@@ -84,17 +84,18 @@ export const getProducts = async (handle: string): Promise<Product[]> => {
     "limit": 100
   });
   for (const edge of res.plp.products.edges) {
+    console.log(`Parsing Graphql note`);
     const productNode = edge.node;
 
     const meta = JSON.parse(productNode.metafield.value);
 
     products.push({
       name: productNode.title,
-      from: 'kineticlabs',
-      price: '$' + productNode.variants.edges[0].node.priceV2.amount,
+      comapny: 'kineticlabs',
+      price: +productNode.variants.edges[0].node.priceV2.amount,
       image: productNode.images.edges[0].node.originalSrc,
       url: meta['seo']['url'],
-      productType: handle,
+      type: handle,
     });
   }
 

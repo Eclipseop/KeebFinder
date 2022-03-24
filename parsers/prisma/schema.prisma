@@ -12,8 +12,8 @@ model Product {
   createdAt DateTime @default(now())
   name      String
   image     String
-  price     String
+  price     Decimal
   url       String
-  from      String
-  productType      String
+  company   String
+  type      String
 }
