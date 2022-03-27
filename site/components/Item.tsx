@@ -11,7 +11,7 @@ const Item = ({product}: { product: Product }) => {
   return (
     <div className="border rounded p-2 h-72 hover:ring ring-blue-200 flex flex-col bg-gray-100 border min-w-[275px]">
       <img 
-        className="h-40 w-40 rounded hover:h-96 hover:w-96 hover:absolute transition-height ease-in-out duration-75" 
+        className="h-40 w-40 rounded" 
         alt="keyboard image"
         src={`${product.image.startsWith('http') ? '' : 'https://'}${product.image}`} 
       />
